@@ -53,5 +53,23 @@ select * from  Output_TargetID_Mapping
 limit 10;
 
 
+#DERIVED COLUMNS
+
+alter table sale_train
+add column year_custom int;
+
+alter table sale_train
+add column month_custom int;
+
+UPDATE sale_train t1, sale_train t2 
+SET t1.year_custom = SUBSTRING_INDEX(t2.year_month_custom,'/',1)
+WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom=t2.year_month_custom
+and t1.number_sale = t2.number_sale  ;
+
+UPDATE sale_train t1, sale_train t2 
+SET t1.month_custom = SUBSTRING_INDEX(t2.year_month_custom,'/',-1)
+WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom=t2.year_month_custom
+and t1.number_sale = t2.number_sale  ;
+
 
 
