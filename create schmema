@@ -1,0 +1,57 @@
+use ASUS;
+
+drop table if exists sale_train;
+create table sale_train
+(module_category	VARCHAR(300),
+component_category	 VARCHAR(300) ,
+year_month_custom VARCHAR(300),	number_sale INT ) ;
+
+LOAD DATA LOCAL INFILE 
+'D:\\Desktop\\Asus\\SaleTrain.csv'
+INTO TABLE sale_train 
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n'  ignore 1 lines
+(module_category , component_category , year_month_custom,	number_sale ) ;
+
+#check
+select * from sale_train
+limit 10 ;
+
+drop table if exists repair_train;
+create table repair_train
+(module_category	VARCHAR(300),
+component_category	 VARCHAR(300) ,
+year_month_custom_sale VARCHAR(300), year_month_custom_repair VARCHAR(300) ,	number_repair INT ) ;
+
+LOAD DATA LOCAL INFILE 
+'D:\\Desktop\\Asus\\RepairTrain.csv'
+INTO TABLE  repair_train 
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n'  ignore 1 lines
+(module_category, component_category,
+year_month_custom_sale , year_month_custom_repair  ,	number_repair) ;
+
+#check
+select * from  repair_train 
+limit 10;
+
+
+drop table if exists Output_TargetID_Mapping;
+create table Output_TargetID_Mapping
+(module_category VARCHAR(300),	component_category	VARCHAR(300), year_custom VARCHAR(300),	month_custom  SMALLINT);
+
+
+LOAD DATA LOCAL INFILE 
+'D:\\Desktop\\Asus\\Output_TargetID_Mapping.csv'
+INTO TABLE  Output_TargetID_Mapping 
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n'  ignore 1 lines
+(module_category ,	component_category	, year_custom ,	month_custom ) ;
+
+#check
+select * from  Output_TargetID_Mapping
+limit 10;
+
+
+
+
