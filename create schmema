@@ -61,15 +61,6 @@ add column year_custom int;
 alter table sale_train
 add column month_custom int;
 
-UPDATE sale_train t1, sale_train t2 
-SET t1.year_custom = SUBSTRING_INDEX(t2.year_month_custom,'/',1)
-WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom=t2.year_month_custom
-and t1.number_sale = t2.number_sale  ;
-
-UPDATE sale_train t1, sale_train t2 
-SET t1.month_custom = SUBSTRING_INDEX(t2.year_month_custom,'/',-1)
-WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom=t2.year_month_custom
-and t1.number_sale = t2.number_sale  ;
 
 #DERIVED columns - REPAIR table
 
@@ -85,24 +76,40 @@ add column year_repair int;
 alter table repair_train
 add column month_repair int;
 
+USE ASUS;
+
+alter table sale_train
+add column id_custom int auto_increment primary key ;
+
+alter table repair_train
+add column id_custom int auto_increment primary key ;
+
+create index index1 on sale_train(id_custom);
+create index index1 on repair_train(id_custom);
+
+UPDATE sale_train t1, sale_train t2 
+SET t1.year_custom = SUBSTRING_INDEX(t2.year_month_custom,'/',1)
+WHERE t1.id_custom=t2.id_custom ;
+
+UPDATE sale_train t1, sale_train t2 
+SET t1.month_custom = SUBSTRING_INDEX(t2.year_month_custom,'/',-1)
+WHERE t1.id_custom=t2.id_custom ;
+
 UPDATE repair_train t1, repair_train t2 
 SET t1.year_sale = SUBSTRING_INDEX(t2.year_month_custom_sale,'/',1)
-WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom_sale=t2.year_month_custom_sale and t1.year_month_custom_repair=t2.year_month_custom_repair
-and t1.number_sale = t2.number_sale  ;
+WHERE t1.id_custom=t2.id_custom ;
 
 UPDATE repair_train t1, repair_train t2 
 SET t1.month_sale = SUBSTRING_INDEX(t2.year_month_custom_sale,'/',-1)
-WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom_sale=t2.year_month_custom_sale and t1.year_month_custom_repair=t2.year_month_custom_repair
-and t1.number_sale = t2.number_sale  ;
+WHERE t1.id_custom=t2.id_custom ;
 
 UPDATE repair_train t1, repair_train t2 
 SET t1.year_repair = SUBSTRING_INDEX(t2.year_month_custom_repair,'/',1)
-WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom_sale=t2.year_month_custom_sale and t1.year_month_custom_repair=t2.year_month_custom_repair
-and t1.number_sale = t2.number_sale   ;
+WHERE t1.id_custom=t2.id_custom ;
 
 UPDATE repair_train t1, repair_train t2 
 SET t1.month_repair = SUBSTRING_INDEX(t2.year_month_custom_repair,'/',-1)
-WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom_sale=t2.year_month_custom_sale and t1.year_month_custom_repair=t2.year_month_custom_repair
-and t1.number_sale = t2.number_sale   ;
+WHERE t1.id_custom=t2.id_custom ;
+
 
 
