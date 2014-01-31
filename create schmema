@@ -53,7 +53,7 @@ select * from  Output_TargetID_Mapping
 limit 10;
 
 
-#DERIVED COLUMNS
+#DERIVED COLUMNS - SALE TABLE
 
 alter table sale_train
 add column year_custom int;
@@ -71,5 +71,38 @@ SET t1.month_custom = SUBSTRING_INDEX(t2.year_month_custom,'/',-1)
 WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom=t2.year_month_custom
 and t1.number_sale = t2.number_sale  ;
 
+#DERIVED columns - REPAIR table
+
+alter table repair_train
+add column year_sale int;
+
+alter table repair_train
+add column month_sale int;
+
+alter table repair_train
+add column year_repair int;
+
+alter table repair_train
+add column month_repair int;
+
+UPDATE repair_train t1, repair_train t2 
+SET t1.year_sale = SUBSTRING_INDEX(t2.year_month_custom_sale,'/',1)
+WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom_sale=t2.year_month_custom_sale and t1.year_month_custom_repair=t2.year_month_custom_repair
+and t1.number_sale = t2.number_sale  ;
+
+UPDATE repair_train t1, repair_train t2 
+SET t1.month_sale = SUBSTRING_INDEX(t2.year_month_custom_sale,'/',-1)
+WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom_sale=t2.year_month_custom_sale and t1.year_month_custom_repair=t2.year_month_custom_repair
+and t1.number_sale = t2.number_sale  ;
+
+UPDATE repair_train t1, repair_train t2 
+SET t1.year_repair = SUBSTRING_INDEX(t2.year_month_custom_repair,'/',1)
+WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom_sale=t2.year_month_custom_sale and t1.year_month_custom_repair=t2.year_month_custom_repair
+and t1.number_sale = t2.number_sale   ;
+
+UPDATE repair_train t1, repair_train t2 
+SET t1.month_repair = SUBSTRING_INDEX(t2.year_month_custom_repair,'/',-1)
+WHERE t1.module_category = t2.module_category and t1.component_category=t2.component_category and t1.year_month_custom_sale=t2.year_month_custom_sale and t1.year_month_custom_repair=t2.year_month_custom_repair
+and t1.number_sale = t2.number_sale   ;
 
 
