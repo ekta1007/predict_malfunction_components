@@ -112,4 +112,8 @@ SET t1.month_repair = SUBSTRING_INDEX(t2.year_month_custom_repair,'/',-1)
 WHERE t1.id_custom=t2.id_custom ;
 
 
+#converting string keys using SHA hash map function - see also here
+#http://greenash.net.au/thoughts/2010/03/generating-unique-integer-ids-from-strings-in-mysql/
+select CONV(SUBSTRING(CAST(SHA(Concat(module_category,component_category)) AS CHAR), 1, 16), 16, 10);
+
 
