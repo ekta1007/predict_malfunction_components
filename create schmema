@@ -123,7 +123,14 @@ add column id_unique BIGINT UNSIGNED NOT NULL FIRST;
 update sale_train  set id_unique =CONV(SUBSTRING(CAST(SHA(Concat(module_category,component_category)) AS CHAR), 1, 16), 16, 10) ;
 update repair_train  set id_unique =CONV(SUBSTRING(CAST(SHA(Concat(module_category,component_category)) AS CHAR), 1, 16), 16, 10) ;
 
+create index index5 on sale_train(id_unique);
+create index index5 on repair_train(id_unique);
 
+
+alter table repair_train
+add column time_to_repair_months int;
+
+update repair_train  set time_to_repair_months =(year_repair-year_sale)*12+(month_repair-month_sale)  ;
 
 
 
