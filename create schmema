@@ -134,3 +134,18 @@ update repair_train  set time_to_repair_months =(year_repair-year_sale)*12+(mont
 
 
 
+# analysis & joining etc for modelling 
+drop table if exists temp_survival ;
+create table temp_survival
+select a.id_unique, a.year_month_custom as sale_date, sum(a.number_sale) as total_sales_for_this_date from sale_train a
+group by id_unique, sale_date ;
+# for cross verification
+
+
+drop table if exists survival;
+create table survival
+select a.id_unique, a.year_month_custom as sale_date, b.year_month_custom_repair as repair_date, b.number_repair , sum(a.number_sale) as total_sales_for_this_date from sale_train a
+inner join repair_train b
+where a.id_unique=b.id_unique and a.year_month_custom = b.year_month_custom_sale
+group by id_unique, sale_date, repair_date;
+
