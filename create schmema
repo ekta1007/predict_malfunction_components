@@ -114,6 +114,16 @@ WHERE t1.id_custom=t2.id_custom ;
 
 #converting string keys using SHA hash map function - see also here
 #http://greenash.net.au/thoughts/2010/03/generating-unique-integer-ids-from-strings-in-mysql/
-select CONV(SUBSTRING(CAST(SHA(Concat(module_category,component_category)) AS CHAR), 1, 16), 16, 10);
+alter table sale_train
+add column id_unique BIGINT UNSIGNED NOT NULL FIRST;
+alter table repair_train
+add column id_unique BIGINT UNSIGNED NOT NULL FIRST;
+
+
+update sale_train  set id_unique =CONV(SUBSTRING(CAST(SHA(Concat(module_category,component_category)) AS CHAR), 1, 16), 16, 10) ;
+update repair_train  set id_unique =CONV(SUBSTRING(CAST(SHA(Concat(module_category,component_category)) AS CHAR), 1, 16), 16, 10) ;
+
+
+
 
 
